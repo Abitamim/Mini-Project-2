@@ -5,19 +5,22 @@ arduino_com_port = "COM5"
 baud_rate = 9600
 serial_port = serial.Serial(arduino_com_port, baud_rate, timeout=1)
 start_time = cur_time = time.time()
-data = {}
-coef = [8.264070477002113,-5.180794628332823]
+data = []
+coef = [-25.285041938862830,80.424586008651660]
 voltage = 0
+measurements = 0
 
 while True:
     time_diff = time.time() - start_time
-    # if time_diff > 20:
-    #     break
-    # print(float(serial_port.readline().decode())/1025*5)
-    voltage = float(serial_port.readline().decode())*.0049
-    print(voltage*coef[0] + coef[1])
-    print('\n')
-    # data[time_diff] = [serial_port.readline().decode(), (float(serial_port.readline().decode()))*coef[0] + coef[1]]
-    # time.sleep(1)
-
+    serial_port.write("Start".encode('utf-8'))
+    voltage = serial_port.readline().decode()
+    if voltage != '':
+        voltage = float(voltage)*coef[0]*.01 + coef[1]
+        measurements += 1
+        print(voltage)
+        data.append(voltage)
+    if measurements == 56:
+        break
 print(data)
+
+# [16.706280322717326, 14.430626548219678, 14.6834769676083, 13.92492570944242, 13.419224870665161, 12.913524031887903, 13.166374451276539, 12.66067361249928, 15.189177806385558, 13.672075290053783, 12.154972773722022, 9.373618160447108, 9.62646857983573, 8.86791732166985, 7.856515644115348, 7.350814805338089, 28.084549195205597, 31.37160464725777, 39.209967648305245, 47.04833064935272, 56.15094574734334, 73.59762468515869, 77.89608181476538, 76.12612887904498, 27.831698775816974, 31.877305486035027, 39.46281806769388, 46.7954802299641, 56.6566465861206, 67.78206503922024, 73.59762468515869, 74.60902636271321, 27.831698775816974, 31.624455066646398, 39.46281806769388, 47.04833064935272, 55.645244908566085, 58.426599521841, 70.0577188137179, 73.59762468515869, 27.831698775816974, 31.877305486035027, 38.95711722891662, 47.30118106874135, 56.15094574734334, 67.02351378105436, 74.60902636271321, 72.58622300760418]

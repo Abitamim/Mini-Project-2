@@ -6,8 +6,8 @@ Servo servoRot;
 Servo servoTilt;
 int posRot = 0;
 int posTilt = 0;
-int p[] = {8.264070477002113,-5.180794628332823};
-
+int p[] = {-25.285041938862830,80.424586008651660};
+uint16_t start = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -17,25 +17,37 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(analogRead(A0));
+  
 //  Serial.println(analogRead(A0) / 5);
 //  servo.write(analogRead(A0) / 5);
 //  delay(20);
-
-  for (posRot = 45; posRot <= 135; posRot += 9) { // goes from 0 degrees to 180 degrees
-////    Serial.println("Rotation");
-
+//    servoRot.write(0);
+//    delay(1000);
+//    servoRot.write(90);
+//    delay(1000);
+//    servoTilt.write(90);
+//    delay(1000);    
+//    servoTilt.write(135);
+//    delay(1000);
+//    Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
+//  Serial.println("reading");
+  if (Serial.available() > 0){
+    start = Serial.read();
+//    Serial.println(start);
+  } else {
+    return;
+  }
+  for (posRot = 22; posRot <= 76; posRot += 9) { //   used to be 0-90
+//    Serial.println("Rotation");
     servoRot.write(posRot);
-    delay(150);  
-    for (posTilt = 45; posTilt <= 135; posTilt += 9) { // goes from 180 degrees to 0 degrees
-           servoTilt.write(posTilt); 
-                 delay(50);     
-          Serial.println(posRot);
-      Serial.println(posTilt);
-                 // tell servo to go to position in variable 'pos'
-          Serial.println(analogRead(A0));
-                    // waits 15ms for the servo to reach the position
-  }             
+    delay(1000);  
+    for (posTilt = 90; posTilt <= 125; posTilt += 5) { // goes from 180 degrees to 0 degrees
+          servoTilt.write(posTilt); 
+          delay(1000);     
+         // tell servo to go to position in variable 'pos'
+          Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
+  
+    }             
   }
 
 }
