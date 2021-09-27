@@ -19,11 +19,12 @@ sorted = [[16.70628032, 15.18917781, 28.0845492 , 27.83169878, 27.83169878,
 fig = plt.figure()
 ax = plt.axes(projection ='3d')
 
-x = range(1,7)
+x = range(7)
 y = sorted
-z = range(1,8)
+z = range(8)
 
-for i in range(1, len(y)):
-    ax.scatter(x[i], y[i], z[i])
+for j in y:
+    for i in range(1, len(j)):
+        ax.scatter(x[i], j[i], z[i])
 plt.show()
 

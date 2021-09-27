@@ -31,23 +31,24 @@ void loop() {
 //    delay(1000);
 //    Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
 //  Serial.println("reading");
-  if (Serial.available() > 0){
-    start = Serial.read();
-//    Serial.println(start);
-  } else {
-    return;
-  }
-  for (posRot = 22; posRot <= 76; posRot += 9) { //   used to be 0-90
+//  if (Serial.available() > 0){
+//    start = Serial.read();
+////    Serial.println(start);
+//  } else {
+//    return;
+//  }
+  for (posRot = 25; posRot <= 58; posRot += 3) { //   used to be 0-90
 //    Serial.println("Rotation");
     servoRot.write(posRot);
-    delay(1000);  
-    for (posTilt = 90; posTilt <= 125; posTilt += 5) { // goes from 180 degrees to 0 degrees
+    delay(750);  
+    for (posTilt = 95; posTilt <= 150; posTilt += 5) { // goes from 180 degrees to 0 degrees
           servoTilt.write(posTilt); 
-          delay(1000);     
+          delay(750);     
          // tell servo to go to position in variable 'pos'
           Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
   
     }             
   }
-
+  Serial.println("next set");
+//  Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
 }

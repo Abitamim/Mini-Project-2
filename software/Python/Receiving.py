@@ -13,7 +13,7 @@ measurements = 0
 background = 20
 
 while True:
-    time_diff = time.time() - start_time        # why is this here?
+    # time_diff = time.time() - start_time        # why is this here?
 
     serial_port.write("Start".encode('utf-8'))
     voltage = serial_port.readline().decode()
@@ -28,6 +28,6 @@ while True:
 
 print(data)
 
-sorted = np.reshape(data, (8, ), order = "F")
+sorted = np.reshape(data, (8, 7), order = "F")
 # boolSorted = sorted < background
 # print(boolSorted)
