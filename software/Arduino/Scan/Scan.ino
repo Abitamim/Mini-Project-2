@@ -8,6 +8,13 @@ int posRot = 0;
 int posTilt = 0;
 int p[] = {-25.285041938862830,80.424586008651660};
 uint16_t start = 0;
+int rotAmt = 30;
+int tiltAmt = 30;
+int rotDelta = 1;
+int tiltDelta = 1;
+int centerRot = 94;
+int centerTilt = 82;
+float distance;
 
 void setup() {
   Serial.begin(9600);
@@ -37,18 +44,32 @@ void loop() {
 //  } else {
 //    return;
 //  }
-  for (posRot = 25; posRot <= 58; posRot += 3) { //   used to be 0-90
+
+servoRot.write(centerRot - rotAmt);
+delay(1000);
+servoTilt.write(centerTilt - tiltAmt);
+delay(1000);
+
+
+  for (posRot = centerRot - rotAmt; posRot <= centerRot + rotAmt; posRot += rotDelta) { //   used to be 0-90
 //    Serial.println("Rotation");
     servoRot.write(posRot);
-    delay(750);  
-    for (posTilt = 95; posTilt <= 150; posTilt += 5) { // goes from 180 degrees to 0 degrees
+    delay(250);
+    servoTilt.write(centerTilt - tiltAmt);
+    delay(250);
+    for (posTilt = centerTilt - tiltAmt; posTilt <= centerTilt + tiltAmt; posTilt += tiltDelta) { // goes from 180 degrees to 0 degrees
           servoTilt.write(posTilt); 
-          delay(750);     
-         // tell servo to go to position in variable 'pos'
-          Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
-  
-    }             
+          delay(10);
+          distance = 9999;
+          for (int i = 0; i < 5; i++) {
+            distance = min(analogRead(A0), distance);
+            delay(2);
+          }
+          Serial.println(map(distance, 0, 1023, 0, 500));
+          delay(5);
+    }   
+    Serial.println();          
   }
-  Serial.println("next set");
+//  Serial.println("next set");
 //  Serial.println(map(analogRead(A0), 0, 1023, 0, 500));
 }
