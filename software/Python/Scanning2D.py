@@ -7,9 +7,9 @@ baud_rate = 9600
 background = 20
 
 serial_port = serial.Serial(arduino_com_port, baud_rate, timeout=1)
-data = [[]]
+data = []
 
-rotAngle, tiltAngle, voltage = 0, 0, 0
+rotAngle, voltage = 0, 0
 rotAnglePrev = 999
 
 while True:
@@ -18,21 +18,19 @@ while True:
     serial_port.write("Start".encode('utf-8'))
     reading = serial_port.readline().decode()
     try:
-        tiltAngle, rotAngle, voltage = reading.split()
+        rotAngle, voltage = reading.split()
         if rotAnglePrev != rotAngle:
             print(rotAngle)
             rotAnglePrev = rotAngle
-        data[-1].append([rotAngle, tiltAngle, voltage])
+        data.append([rotAngle, voltage])
     except:
-        data.append([])
+        pass
 
 serial_port.close()
 
 data = [x for x in data if len(x) > 0]
 
-flat_data = [x for sublist in data for x in sublist]
-
-with open("data.csv", "w", newline='') as f:
+with open("data_2d.csv", "w", newline='') as f:
     writer = csv.writer(f)
-    writer.writerow(["Rotational Angle", "Tilt Angle", "Voltage"])
-    writer.writerows(flat_data)
+    writer.writerow(["Rotational Angle", "Voltage"])
+    writer.writerows(data)
