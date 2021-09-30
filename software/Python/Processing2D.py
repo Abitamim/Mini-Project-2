@@ -12,7 +12,9 @@ flat_data["theta"] = np.radians(flat_data["Rotational Angle"])
 flat_data['x'] = flat_data['Distance'] * np.sin(flat_data["theta"])
 flat_data['y'] = flat_data['Distance'] * np.cos(flat_data["theta"])
 
-data = go.Scatter3d(
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(
     x=flat_data['x'],
     y=flat_data['y'],
     mode='markers',
@@ -20,12 +22,26 @@ data = go.Scatter3d(
         'size': 10,
         'opacity': 0.8,
     }
+))
+
+fig.update_layout(
+    title={
+        'text': "Points with Rotational Servo Only",
+        'x': .5,
+        'y': .9,
+        'xanchor': 'center',
+        'yanchor': 'top'},
+    xaxis_title="X (mm)",
+    yaxis_title="Y (mm)",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
 )
 
 layout = go.Layout(
     margin={'l': 0, 'r': 0, 'b': 0, 't': 0}
 )
 
-plot_figure = go.Figure(data=data, layout=layout)
-
-plotly.offline.iplot(plot_figure)
+fig.show()

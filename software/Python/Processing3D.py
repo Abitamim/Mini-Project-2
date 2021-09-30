@@ -17,7 +17,9 @@ flat_data['z'] = flat_data['Distance'] * np.sin(flat_data["a"])
 flat_data = flat_data[flat_data['y'] > 35]
 flat_data = flat_data[flat_data['z'] > -10]
 
-data = go.Scatter3d(
+fig = go.Figure()
+
+fig.add_trace(go.Scatter3d(
     x=flat_data['x'],
     y=flat_data['y'],
     z=flat_data['z'],
@@ -26,12 +28,23 @@ data = go.Scatter3d(
         'size': 10,
         'opacity': 0.8,
     }
+))
+
+fig.update_layout(
+    title={
+        'text': "Cleaned Point Cloud",
+        'x': .5,
+        'y': .9,
+        'xanchor': 'center',
+        'yanchor': 'top'},
+    scene=dict(xaxis_title="X (mm)",
+    yaxis_title="Y (mm)",
+    zaxis_title="Z (mm)"),
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
 )
 
-layout = go.Layout(
-    margin={'l': 0, 'r': 0, 'b': 0, 't': 0}
-)
-
-plot_figure = go.Figure(data=data, layout=layout)
-
-plotly.offline.iplot(plot_figure)
+fig.show()
